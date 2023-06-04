@@ -12,6 +12,7 @@ import id.rich.challengech5.databinding.ActivityProfileBinding
 import id.rich.challengech5.model.Gender
 import id.rich.challengech5.presenter.ProfilePresenter
 import id.rich.challengech5.view.ProfileContract
+import id.rich.challengech5.view.SettingActivity
 
 class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
@@ -47,7 +48,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
     }
 
     override fun navigateToThemeActivity() {
-        startActivity(Intent(this, ThemeActivity::class.java))
+        startActivity(Intent(this, SettingActivity::class.java))
     }
 
     override fun showDialog() {
