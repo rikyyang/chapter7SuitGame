@@ -5,34 +5,26 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import id.rich.challengech5.R
+import id.rich.challengech5.databinding.GameBinding
 import kotlin.random.Random
 
+
 class GameActivity : AppCompatActivity() {
+
+    private lateinit var binding: GameBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.game)
+        binding = GameBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val playername = intent.getStringExtra("player_name")
         val enemyname = intent.getStringExtra("enemy")
-
-        val tvP1 = findViewById<TextView>(R.id.tv_p1)
-        val ivBatuP1 = findViewById<ImageView>(R.id.iv_batup1)
-        val ivKertasP1 = findViewById<ImageView>(R.id.iv_kertasp1)
-        val ivGuntingP1 = findViewById<ImageView>(R.id.iv_guntingp1)
-
-        val tvEnemy = findViewById<TextView>(R.id.tv_enemy)
-        val ivBatuEnemy = findViewById<ImageView>(R.id.iv_batuenemy)
-        val ivKertasEnemy = findViewById<ImageView>(R.id.iv_kertasenemy)
-        val ivGuntingEnemy = findViewById<ImageView>(R.id.iv_guntingenemy)
-
-        val close = findViewById<ImageView>(R.id.iv_close)
-        val refresh = findViewById<ImageView>(R.id.iv_refresh)
 
         val player = Player()
         val enemy = Enemy()
@@ -40,167 +32,173 @@ class GameActivity : AppCompatActivity() {
         var result = ""
         var isEnemyChoose= false
 
-        tvP1.setText(playername)
-        tvEnemy.setText(enemyname)
+        with(binding) {
 
-        fun setEnableButtonP1(active: Boolean){
-            ivBatuP1.isEnabled = active
-            ivKertasP1.isEnabled = active
-            ivGuntingP1.isEnabled = active
-        }
+            tvP1.setText(playername)
+            tvEnemy.setText(enemyname)
 
-        fun setEnableButtonEnemy(active: Boolean){
-            ivBatuEnemy.isEnabled = active
-            ivKertasEnemy.isEnabled = active
-            ivGuntingEnemy.isEnabled = active
-        }
-
-        fun restart(){
-            ivBatuP1.setBackgroundResource(0)
-            ivKertasP1.setBackgroundResource(0)
-            ivGuntingP1.setBackgroundResource(0)
-            ivBatuEnemy.setBackgroundResource(0)
-            ivKertasEnemy.setBackgroundResource(0)
-            ivGuntingEnemy.setBackgroundResource(0)
-            setEnableButtonP1(true)
-            setEnableButtonEnemy(true)
-            isEnemyChoose = false
-        }
-
-        fun openDialog(result: String){
-            val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
-                .create()
-            val view = layoutInflater.inflate(R.layout.dialog_result,null)
-            val buttonPlayAgain = view.findViewById<Button>(R.id.bt_dialogplayagain)
-            val buttonBack = view.findViewById<Button>(R.id.bt_dialogback)
-            val tvResult = view.findViewById<TextView>(R.id.tv_dialogresult)
-            builder.setView(view)
-
-            tvResult.setText(result)
-
-            buttonPlayAgain.setOnClickListener {
-                builder.dismiss()
-                restart()
+            fun setEnableButtonP1(active: Boolean){
+                ivBatup1.isEnabled = active
+                ivKertasp1.isEnabled = active
+                ivGuntingp1.isEnabled = active
             }
-            buttonBack.setOnClickListener {
-                builder.dismiss()
-                finish()
-            }
-            builder.setCanceledOnTouchOutside(false)
-            builder.show()
-        }
 
-        fun showResult(){
-            if(isEnemyChoose){
-                if (player.getStatus() == "MENANG"){
-                    result = "$playername\nMENANG!"
+            fun setEnableButtonEnemy(active: Boolean){
+                ivBatuenemy.isEnabled = active
+                ivKertasenemy.isEnabled = active
+                ivGuntingenemy.isEnabled = active
+            }
+
+            fun restart(){
+                ivBatup1.setBackgroundResource(0)
+                ivKertasp1.setBackgroundResource(0)
+                ivGuntingp1.setBackgroundResource(0)
+                ivBatuenemy.setBackgroundResource(0)
+                ivKertasenemy.setBackgroundResource(0)
+                ivGuntingenemy.setBackgroundResource(0)
+                setEnableButtonP1(true)
+                setEnableButtonEnemy(true)
+                isEnemyChoose = false
+            }
+
+            fun openDialog(result: String){
+                val builder = AlertDialog.Builder(this@GameActivity, R.style.CustomAlertDialog)
+                    .create()
+                val view = layoutInflater.inflate(R.layout.dialog_result,null)
+                val buttonPlayAgain = view.findViewById<Button>(R.id.bt_dialogplayagain)
+                val buttonBack = view.findViewById<Button>(R.id.bt_dialogback)
+                val tvResult = view.findViewById<TextView>(R.id.tv_dialogresult)
+                builder.setView(view)
+
+                tvResult.setText(result)
+
+                buttonPlayAgain.setOnClickListener {
+                    builder.dismiss()
+                    restart()
                 }
-                else if(enemy.getStatus() == "MENANG"){
-                    result = "$enemyname\nMENANG!"
+                buttonBack.setOnClickListener {
+                    builder.dismiss()
+                    finish()
+                }
+                builder.setCanceledOnTouchOutside(false)
+                builder.show()
+            }
+
+            fun showResult(){
+                if(isEnemyChoose){
+                    if (player.getStatus() == "MENANG"){
+                        result = "$playername\nMENANG!"
+                    }
+                    else if(enemy.getStatus() == "MENANG"){
+                        result = "$enemyname\nMENANG!"
+                    }
+                    else{
+                        result = "SERI!"
+                    }
+                    openDialog(result)
+                }
+            }
+
+            fun start(){
+                if (enemyname == "CPU"){
+                    game.computerChoose()
+
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        if(enemy.getPoint() == 2){
+                            ivBatuenemy.setBackgroundResource(R.drawable.background_btnclick)
+                            Toast.makeText(this@GameActivity,"$enemyname Memilih Batu",Toast.LENGTH_SHORT).show()
+                            isEnemyChoose = true
+                            game.startGame()
+                            showResult()
+                        }
+                        if(enemy.getPoint() == 1) {
+                            ivGuntingenemy.setBackgroundResource(R.drawable.background_btnclick)
+                            Toast.makeText(this@GameActivity,"$enemyname Memilih Gunting",Toast.LENGTH_SHORT).show()
+                            isEnemyChoose = true
+                            game.startGame()
+                            showResult()
+                        }
+                        if (enemy.getPoint() == 0){
+                            ivKertasenemy.setBackgroundResource(R.drawable.background_btnclick)
+                            Toast.makeText(this@GameActivity,"$enemyname Memilih Kertas",Toast.LENGTH_SHORT).show()
+                            isEnemyChoose = true
+                            game.startGame()
+                            showResult()
+                        }
+                    },1000)
                 }
                 else{
-                    result = "SERI!"
-                }
-                openDialog(result)
-            }
-        }
-
-        fun start(){
-            if (enemyname == "CPU"){
-                game.computerChoose()
-
-                Handler(Looper.getMainLooper()).postDelayed({
-                    if(enemy.getPoint() == 2){
-                        ivBatuEnemy.setBackgroundResource(R.drawable.background_btnclick)
-                        Toast.makeText(this,"$enemyname Memilih Batu",Toast.LENGTH_SHORT).show()
-                        isEnemyChoose = true
+                    ivBatuenemy.setOnClickListener {
+                        ivBatuenemy.setBackgroundResource(R.drawable.background_btnclick)
+                        setEnableButtonEnemy(false)
+                        enemy.setPoint(2)
+                        Toast.makeText(this@GameActivity,"$enemyname Memilih Batu",Toast.LENGTH_SHORT).show()
                         game.startGame()
+                        isEnemyChoose = true
                         showResult()
                     }
-                    if(enemy.getPoint() == 1) {
-                        ivGuntingEnemy.setBackgroundResource(R.drawable.background_btnclick)
-                        Toast.makeText(this,"$enemyname Memilih Gunting",Toast.LENGTH_SHORT).show()
-                        isEnemyChoose = true
+
+                    ivKertasenemy.setOnClickListener {
+                        ivKertasenemy.setBackgroundResource(R.drawable.background_btnclick)
+                        setEnableButtonEnemy(false)
+                        enemy.setPoint(0)
+                        Toast.makeText(this@GameActivity,"$enemyname Memilih Kertas",Toast.LENGTH_SHORT).show()
                         game.startGame()
+                        isEnemyChoose = true
                         showResult()
                     }
-                    if (enemy.getPoint() == 0){
-                        ivKertasEnemy.setBackgroundResource(R.drawable.background_btnclick)
-                        Toast.makeText(this,"$enemyname Memilih Kertas",Toast.LENGTH_SHORT).show()
-                        isEnemyChoose = true
+
+                    ivGuntingenemy.setOnClickListener {
+                        ivGuntingenemy.setBackgroundResource(R.drawable.background_btnclick)
+                        setEnableButtonEnemy(false)
+                        enemy.setPoint(1)
+                        Toast.makeText(this@GameActivity,"$enemyname Memilih Gunting",Toast.LENGTH_SHORT).show()
                         game.startGame()
+                        isEnemyChoose = true
                         showResult()
                     }
-                },1000)
+                }
+                //Log.d("getstatus", "1: ${player.getStatus()}, enemy : ${enemy.getStatus()} ")
+                Log.d("isenemy", "isenemy : $isEnemyChoose")
+
+
             }
-            else{
-                ivBatuEnemy.setOnClickListener {
-                    ivBatuEnemy.setBackgroundResource(R.drawable.background_btnclick)
-                    setEnableButtonEnemy(false)
-                    enemy.setPoint(2)
-                    Toast.makeText(this,"$enemyname Memilih Batu",Toast.LENGTH_SHORT).show()
-                    game.startGame()
-                    isEnemyChoose = true
-                    showResult()
-                }
 
-                ivKertasEnemy.setOnClickListener {
-                    ivKertasEnemy.setBackgroundResource(R.drawable.background_btnclick)
-                    setEnableButtonEnemy(false)
-                    enemy.setPoint(0)
-                    Toast.makeText(this,"$enemyname Memilih Kertas",Toast.LENGTH_SHORT).show()
-                    game.startGame()
-                    isEnemyChoose = true
-                    showResult()
-                }
-
-                ivGuntingEnemy.setOnClickListener {
-                    ivGuntingEnemy.setBackgroundResource(R.drawable.background_btnclick)
-                    setEnableButtonEnemy(false)
-                    enemy.setPoint(1)
-                    Toast.makeText(this,"$enemyname Memilih Gunting",Toast.LENGTH_SHORT).show()
-                    game.startGame()
-                    isEnemyChoose = true
-                    showResult()
-                }
+            ivBatup1.setOnClickListener {
+                ivBatup1.setBackgroundResource(R.drawable.background_btnclick)
+                setEnableButtonP1(false)
+                player.setPoint(2)
+                Toast.makeText(this@GameActivity,"$playername Memilih Batu",Toast.LENGTH_SHORT).show()
+                start()
             }
-            //Log.d("getstatus", "1: ${player.getStatus()}, enemy : ${enemy.getStatus()} ")
-            Log.d("isenemy", "isenemy : $isEnemyChoose")
+
+            ivKertasp1.setOnClickListener {
+                ivKertasp1.setBackgroundResource(R.drawable.background_btnclick)
+                setEnableButtonP1(false)
+                player.setPoint(0)
+                Toast.makeText(this@GameActivity,"$playername Memilih Kertas",Toast.LENGTH_SHORT).show()
+                start()
+            }
+
+            ivGuntingp1.setOnClickListener {
+                ivGuntingp1.setBackgroundResource(R.drawable.background_btnclick)
+                setEnableButtonP1(false)
+                player.setPoint(1)
+                Toast.makeText(this@GameActivity,"$playername Memilih Gunting",Toast.LENGTH_SHORT).show()
+                start()
+            }
+
+            ivClose.setOnClickListener {
+                finish()
+            }
+
+            ivRefresh.setOnClickListener {
+                restart()
+            }
 
 
         }
 
-        ivBatuP1.setOnClickListener {
-            ivBatuP1.setBackgroundResource(R.drawable.background_btnclick)
-            setEnableButtonP1(false)
-            player.setPoint(2)
-            Toast.makeText(this,"$playername Memilih Batu",Toast.LENGTH_SHORT).show()
-            start()
-        }
-
-        ivKertasP1.setOnClickListener {
-            ivKertasP1.setBackgroundResource(R.drawable.background_btnclick)
-            setEnableButtonP1(false)
-            player.setPoint(0)
-            Toast.makeText(this,"$playername Memilih Kertas",Toast.LENGTH_SHORT).show()
-            start()
-        }
-
-        ivGuntingP1.setOnClickListener {
-            ivGuntingP1.setBackgroundResource(R.drawable.background_btnclick)
-            setEnableButtonP1(false)
-            player.setPoint(1)
-            Toast.makeText(this,"$playername Memilih Gunting",Toast.LENGTH_SHORT).show()
-            start()
-        }
-
-        close.setOnClickListener {
-            finish()
-        }
-
-        refresh.setOnClickListener {
-            restart()
-        }
 
 
     }

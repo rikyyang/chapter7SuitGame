@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/1.DATA/1. PROJECT/5. PROGRAM/BINAR/Challenge7/chapter7SuitGame/app/src/main/res/layout/activity_register.xml" value="0.1598731884057971" />
+        <entry key="..\:/1.DATA/1. PROJECT/5. PROGRAM/BINAR/Challenge7/chapter7SuitGame/app/src/main/res/layout/activity_setting.xml" value="0.1598731884057971" />
+        <entry key="..\:/1.DATA/1. PROJECT/5. PROGRAM/BINAR/Challenge7/chapter7SuitGame/app/src/main/res/layout/game.xml" value="0.1598731884057971" />
+        <entry key="..\:/1.DATA/1. PROJECT/5. PROGRAM/BINAR/Challenge7/chapter7SuitGame/app/src/main/res/layout/info_add_account.xml" value="0.1598731884057971" />
         <entry key="..\:/1.DATA/1. PROJECT/5. PROGRAM/ChallengeCH5/app/src/main/res/drawable/background_btnawal.xml" value="0.174" />
         <entry key="..\:/1.DATA/1. PROJECT/5. PROGRAM/ChallengeCH5/app/src/main/res/drawable/background_btnclick.xml" value="0.174" />
         <entry key="..\:/1.DATA/1. PROJECT/5. PROGRAM/ChallengeCH5/app/src/main/res/drawable/bg_button_rounded.xml" value="0.145" />
@@ -20,7 +24,7 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
