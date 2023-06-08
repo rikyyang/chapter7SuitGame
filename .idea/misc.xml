@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/1.DATA/1. PROJECT/5. PROGRAM/BINAR/Challenge7/chapter7SuitGame/app/src/main/res/drawable/background_btnawal.xml" value="0.1405" />
+        <entry key="..\:/1.DATA/1. PROJECT/5. PROGRAM/BINAR/Challenge7/chapter7SuitGame/app/src/main/res/drawable/background_btnclick.xml" value="0.1405" />
+        <entry key="..\:/1.DATA/1. PROJECT/5. PROGRAM/BINAR/Challenge7/chapter7SuitGame/app/src/main/res/drawable/background_btntheme.xml" value="0.1405" />
+        <entry key="..\:/1.DATA/1. PROJECT/5. PROGRAM/BINAR/Challenge7/chapter7SuitGame/app/src/main/res/layout/activity_profile.xml" value="0.25" />
         <entry key="..\:/1.DATA/1. PROJECT/5. PROGRAM/BINAR/Challenge7/chapter7SuitGame/app/src/main/res/layout/activity_register.xml" value="0.1598731884057971" />
         <entry key="..\:/1.DATA/1. PROJECT/5. PROGRAM/BINAR/Challenge7/chapter7SuitGame/app/src/main/res/layout/activity_setting.xml" value="0.1598731884057971" />
         <entry key="..\:/1.DATA/1. PROJECT/5. PROGRAM/BINAR/Challenge7/chapter7SuitGame/app/src/main/res/layout/game.xml" value="0.1598731884057971" />
