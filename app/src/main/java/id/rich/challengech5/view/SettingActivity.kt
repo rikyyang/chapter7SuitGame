@@ -18,9 +18,9 @@ class SettingActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(SettingViewModel::class.java)
-        viewModel.theme.observe(this, { newTheme ->
+        viewModel.theme.observe(this) { newTheme ->
             updateTheme(newTheme)
-        })
+        }
 
         binding.rgThemeOptions.setOnCheckedChangeListener { _, checkedId ->
             val theme = when (checkedId) {

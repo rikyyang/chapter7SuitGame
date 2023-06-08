@@ -47,7 +47,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         }
     }
 
-    override fun navigateToThemeActivity() {
+    override fun navigateToSettingActivity() {
         startActivity(Intent(this, SettingActivity::class.java))
     }
 
