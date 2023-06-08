@@ -30,7 +30,7 @@ class ProfilePresenter(
     }
 
     override fun onThemeSettingClicked() {
-        view.navigateToThemeActivity()
+        view.navigateToSettingActivity()
     }
 
     override fun onGameHistoryClicked() {
