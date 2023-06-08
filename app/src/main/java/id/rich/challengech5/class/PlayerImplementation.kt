@@ -1,4 +1,4 @@
-package id.rich.challengech5.class
+package id.rich.challengech5.`class`
 
 abstract class PlayerImplementation {
     abstract fun setPoint(choose: Int)
