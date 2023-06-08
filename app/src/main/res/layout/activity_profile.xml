@@ -68,7 +68,7 @@
             android:textSize="16dp" />
 
         <Button
-            android:id="@+id/btnLogOut"
+            android:id="@+id/btnVideo"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -79,7 +79,7 @@
             android:textSize="16dp" />
 
         <Button
-            android:id="@+id/btnVideo"
+            android:id="@+id/btnLogOut"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
