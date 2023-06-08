@@ -9,7 +9,9 @@ class ProfileViewModel: ViewModel() {
     private val _showVideoDialog = MutableLiveData<String>()
     val showVideoDialog: LiveData<String> = _showVideoDialog
 
-    fun openVideoDialog(url: String) {
-        _showVideoDialog.value = url
+
+    fun openVideoDialog(videoUrl: String) {
+        _showVideoDialog.value = videoUrl
     }
+
 }

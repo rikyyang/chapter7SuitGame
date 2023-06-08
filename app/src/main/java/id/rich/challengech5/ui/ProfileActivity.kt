@@ -50,6 +50,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
             }
         }
 
+
         val db = GameDatabase.getInstance(this)
         userDao = db.userDao()
 
@@ -59,6 +60,14 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         presenter.setDataProfil(username)
 
         btnClickListener()
+    }
+
+    private fun pauseVideo() {
+        exoPlayer.pause()
+    }
+
+    private fun playVideo() {
+        exoPlayer.play()
     }
 
     //menampilkan video dengan dialog
@@ -88,6 +97,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
         closeButton.setOnClickListener {
             exoPlayer.stop()
+            exoPlayer.release()
             dialog.dismiss()
         }
 
@@ -162,7 +172,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
         //viewmodel tidak menggunakan presenter
         binding.btnVideo.setOnClickListener {
-            val videoUrl = "https://vimeo.com/834328391"
+            val videoUrl = "android.resource://id.rich.challengech5/${R.raw.sample_video}"
             viewModel.openVideoDialog(videoUrl)
         }
 
