@@ -9,7 +9,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="ChallengeCH6"
+        android:label="ChallengeCH7"
         android:supportsRtl="true"
         android:theme="@style/Theme.chapter6SuitGame"
         tools:targetApi="31">
