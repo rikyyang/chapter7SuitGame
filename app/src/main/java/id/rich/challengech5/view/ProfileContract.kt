@@ -6,7 +6,7 @@ interface ProfileContract {
     interface View {
         fun showUserName(name: String)
         fun showUserGender(gender: Gender)
-        fun navigateToThemeActivity()
+        fun navigateToSettingActivity()
         fun showDialog()
         fun dismissDialog()
         fun setResultAndFinish(resultCode: Int)

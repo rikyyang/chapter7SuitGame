@@ -1,60 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.SettingActivity">
+    tools:context=".view.SettingActivity"
+    >
 
-    <TextView
-        android:id="@+id/tv_theme"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:fontFamily="@font/oneoftheguys"
-        android:text="Theme Options"
-        android:textColor="?attr/colorPrimary"
-        android:textSize="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        >
 
-    <RadioGroup
-        android:id="@+id/rg_themeOptions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_theme">
-
-        <RadioButton
-            android:id="@+id/rb_autoTheme"
+        <LinearLayout
+            android:id="@+id/ll_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/oneoftheguys"
-            android:text="Auto"
-            android:textColor="?attr/colorPrimary"
-            android:textSize="20dp" />
+            android:layout_marginTop="50dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <RadioButton
-            android:id="@+id/rb_lightTheme"
+            <TextView
+                android:id="@+id/tv_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/oneoftheguys"
+                android:text="Theme Options"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="25sp" />
+
+            <RadioGroup
+                android:id="@+id/rg_themeOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp">
+
+                <RadioButton
+                    android:id="@+id/rb_autoTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/oneoftheguys"
+                    android:text="Auto"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="20sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_lightTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/oneoftheguys"
+                    android:text="Light"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="20sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_darkTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/oneoftheguys"
+                    android:text="Dark"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="20sp" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/oneoftheguys"
-            android:text="Light"
-            android:textColor="?attr/colorPrimary"
-            android:textSize="20dp" />
+            android:layout_marginTop="50dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_theme">
 
-        <RadioButton
-            android:id="@+id/rb_darkTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/oneoftheguys"
-            android:text="Dark"
-            android:textColor="?attr/colorPrimary"
-            android:textSize="20dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/oneoftheguys"
+                android:text="Edit Profile"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="25sp" />
 
-    </RadioGroup>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="new name" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <RadioGroup
+                android:id="@+id/rg_genderOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp">
+
+                <RadioButton
+                    android:id="@+id/rb_maleNewProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/oneoftheguys"
+                    android:text="Male"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="20sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_femaleNewProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/oneoftheguys"
+                    android:text="Female"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="20sp" />
+
+            </RadioGroup>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/oneoftheguys"
+                android:text="save" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
+
