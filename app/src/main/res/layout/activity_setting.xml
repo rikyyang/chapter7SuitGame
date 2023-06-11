@@ -24,7 +24,6 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/tv_theme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -102,7 +101,6 @@
                 android:layout_marginTop="10dp">
 
                 <RadioButton
-                    android:id="@+id/rb_maleNewProfile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/oneoftheguys"
@@ -111,7 +109,6 @@
                     android:textSize="20sp" />
 
                 <RadioButton
-                    android:id="@+id/rb_femaleNewProfile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/oneoftheguys"
