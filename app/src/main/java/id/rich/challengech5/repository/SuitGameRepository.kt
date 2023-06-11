@@ -24,7 +24,7 @@ class SuitGameRepository(private val apiService: ApiService) {
                         }
                         else{
                             if(response.body()?.success.toString() == "false"){
-                                listener.onRegisterNewUserFailure(response.code().toString())
+                                listener.onRegisterNewUserFailure("Failed load data")
                             }
                             else{
                                 listener.onRegisterNewUserSuccess("Success!")

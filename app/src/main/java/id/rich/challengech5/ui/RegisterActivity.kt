@@ -39,10 +39,15 @@ class RegisterActivity : AppCompatActivity() {
         viewModel.onSuccess.observe(this) { onSuccess ->
             if (onSuccess){
                 Toast.makeText(context, "Success register new user!", Toast.LENGTH_LONG).show()
+                nextScreen()
             }
             else{
                 Toast.makeText(context, viewModel.errCause.value, Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun nextScreen() {
+        finish()
     }
 }
