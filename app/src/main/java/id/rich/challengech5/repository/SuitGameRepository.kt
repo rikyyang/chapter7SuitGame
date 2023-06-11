@@ -12,7 +12,7 @@ class SuitGameRepository(private val apiService: ApiService) {
         apiService.registerNewUser(postRegisterNewUserResponse)
             .enqueue(object : Callback<BaseResponse>{
                 override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                    listener.onRegisterNewUserFailure("Data gagal dimuat")
+                    listener.onRegisterNewUserFailure("Failed load data")
                 }
                 override fun onResponse(
                     call: Call<BaseResponse>,
@@ -20,14 +20,19 @@ class SuitGameRepository(private val apiService: ApiService) {
                 ) {
                     if (response.isSuccessful){
                         if (response.body()?.success == null){
-                            listener.onRegisterNewUserFailure("Data gagal dimuat")
+                            listener.onRegisterNewUserFailure("Failed load data")
                         }
                         else{
-                            listener.onRegisterNewUserSuccess("Data Sukses")
+                            if(response.body()?.success.toString() == "false"){
+                                listener.onRegisterNewUserFailure(response.code().toString())
+                            }
+                            else{
+                                listener.onRegisterNewUserSuccess("Success!")
+                            }
                         }
                     }
                     else{
-                        listener.onRegisterNewUserFailure("Data gagal dimuat")
+                        listener.onRegisterNewUserFailure(response.code().toString())
                     }
                 }
             })

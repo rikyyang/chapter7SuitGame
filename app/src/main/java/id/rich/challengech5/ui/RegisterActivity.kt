@@ -35,12 +35,13 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun observeRegister(context: Context) {
+
         viewModel.onSuccess.observe(this) { onSuccess ->
             if (onSuccess){
-                Toast.makeText(context, "User berhasil ditambahkan", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Success register new user!", Toast.LENGTH_LONG).show()
             }
             else{
-                Toast.makeText(context, "User gagal ditambahkan", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, viewModel.errCause.value, Toast.LENGTH_LONG).show()
             }
         }
     }
