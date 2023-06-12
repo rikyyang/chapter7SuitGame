@@ -5,14 +5,9 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.*
 import id.rich.challengech5.database.UserDao
-import id.rich.challengech5.service.ApiService
-import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class ProfileViewModel(application: Application) : AndroidViewModel(application) {
     private lateinit var userDao: UserDao
-    private val apiService: ApiService by lazy { createApiService() }
 
     private val _userName = MutableLiveData<String>()
     val userName: LiveData<String> get() = _userName
@@ -34,27 +29,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     fun init(userDao: UserDao) {
         this.userDao = userDao
-    }
-
-    private fun createApiService(): ApiService {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://binar-gdd-cc8.herokuapp.com/api")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        return retrofit.create(ApiService::class.java)
-    }
-
-    fun fetchUserProfile(username: String) {
-        viewModelScope.launch {
-            try {
-                val user = apiService.getUser(username)
-                _userName.value = user.toString()
-//                _userGender.value = user.toString()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
     }
 
     fun onThemeSettingClicked() {
@@ -85,6 +59,5 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         editor.clear()
         editor.apply()
     }
-
 
 }

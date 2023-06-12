@@ -1,18 +1,23 @@
 package id.rich.challengech5.ui
 
-import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.viewModelScope
 import id.rich.challengech5.R
 import id.rich.challengech5.database.GameDatabase
 import id.rich.challengech5.databinding.ActivityProfileBinding
+import id.rich.challengech5.service.ApiClient
+import id.rich.challengech5.service.BaseResponse
 import id.rich.challengech5.view.SettingActivity
 import id.rich.challengech5.viewmodel.ProfileViewModel
-import kotlinx.coroutines.launch
+import retrofit2.Callback
+import retrofit2.Call
+import retrofit2.Response
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -30,20 +35,45 @@ class ProfileActivity : AppCompatActivity() {
 
         viewModel = ProfileViewModel(application)
 
-        viewModel.viewModelScope.launch {
-            val user = viewModel.fetchUserProfile("username")
-            // Lakukan sesuatu dengan data pengguna yang diterima dari API
-        }
-
         viewModel.init(userDao)
-
-        val username = intent.getStringExtra("player_name")
-        if (username != null) {
-            viewModel.fetchUserProfile(username)
-        }
 
         btnClickListener()
         observeViewModel()
+        fetchDataFromAPI()
+    }
+
+    fun fetchDataFromAPI() {
+        val apiService = ApiClient.instance
+        val call = apiService.getData()
+
+        call.enqueue(object : Callback<BaseResponse> {
+
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (response.isSuccessful) {
+                    val data = response.body()
+                    val username = data?.username
+                    binding.tvNamaUser.setText(username)
+
+                    val email = data?.email
+                    binding.tvNamaEmail.setText(email)
+
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = "Failed to retrieve data: $errorBody"
+
+                    Log.e(TAG, errorMessage)
+                    Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable?) {
+                val errorMessage = "Failed to make API request: ${t?.message}"
+
+                Log.e(TAG, errorMessage)
+                Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 
     private fun observeViewModel() {
@@ -114,14 +144,6 @@ class ProfileActivity : AppCompatActivity() {
         }
         binding.btnLogOut.setOnClickListener {
             viewModel.onLogOutClicked()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 123 && resultCode == Activity.RESULT_OK) {
-            startActivity(Intent(this, LandingPageActivity::class.java))
-            finish()
         }
     }
 }

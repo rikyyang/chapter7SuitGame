@@ -10,7 +10,13 @@ data class BaseResponse(
     @SerializedName("status")
     val status: Boolean?,
     @SerializedName("error")
-    val error: String?
+    val error: String?,
+    @SerializedName("id")
+    val _id: String,
+    @SerializedName("username")
+    val username: String,
+    @SerializedName("email")
+    val email: String
 )
 
 

@@ -37,9 +37,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/oneoftheguys"
-                android:text="Nama"
+                android:text="@string/nama"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/tv_namaEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/oneoftheguys"
+                android:textStyle="italic"
+                android:text="@string/nama_email_com"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -59,7 +70,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/background_btntheme"
                 android:fontFamily="@font/oneoftheguys"
-                android:text="setting"
+                android:text="@string/setting"
                 android:textSize="16sp" />
 
             <Button
@@ -70,7 +81,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_btntheme"
                 android:fontFamily="@font/oneoftheguys"
-                android:text="game history"
+                android:text="@string/game_history"
                 android:textSize="16sp" />
 
             <Button
@@ -81,7 +92,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_btntheme"
                 android:fontFamily="@font/oneoftheguys"
-                android:text="logout"
+                android:text="@string/logout"
                 android:textSize="16sp" />
 
         </LinearLayout>
