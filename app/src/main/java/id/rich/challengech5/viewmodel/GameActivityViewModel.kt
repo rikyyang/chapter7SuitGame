@@ -23,23 +23,24 @@ class GameActivityViewModel(application: Application): AndroidViewModel(applicat
     private val _gameResult = MutableLiveData<GameResult>()
     val gameResult: LiveData<GameResult> = _gameResult
 
-
-    init {
-        _gameResult.value = GameResult.DRAW
-        val gameHistoryDao = GameDatabase.getInstance(application).gameHistoryDao()
-        gameHistoryRepository = GameHistoryRepository(gameHistoryDao)
-    }
-
-    fun startGame(playerName: String, enemyName: String) {
         val player = Player()
         val enemy = Enemy()
         val game = GameBuilder(player, enemy)
 
-        val playerChoice = player.getPoint()
-        val enemyChoice = enemy.getPoint()
+    init {
 
-        val result = determineResult(playerChoice, enemyChoice)
-        player.setStatus(result)
+        val gameHistoryDao = GameDatabase.getInstance(application).gameHistoryDao()
+        gameHistoryRepository = GameHistoryRepository(gameHistoryDao)
+    }
+
+    fun startGame(playerName: String, enemyName: String,player1Choice: Int,player2choice: Int) {
+
+        player.setPoint(player1Choice)
+        enemy.setPoint(player2choice)
+
+        game.startGame()
+
+        val result = player.getStatus()
         enemy.setStatus(result)
 
         val gameHistory = GameHistory(0,playerName,enemyName,result)
@@ -50,15 +51,6 @@ class GameActivityViewModel(application: Application): AndroidViewModel(applicat
 
     }
 
-    fun determineResult(playerChoice: Int, enemyChoice: Int): GameResult {
-        return when {
-            playerChoice == enemyChoice -> GameResult.DRAW
-            (playerChoice == 0 && enemyChoice == 2) ||
-                    (playerChoice == 1 && enemyChoice == 0) ||
-                    (playerChoice == 2 && enemyChoice == 1) -> GameResult.WIN
-            else -> GameResult.LOSE
-        }
-    }
 
     fun insertGameHistory(gameHistory: GameHistory) {
         viewModelScope.launch(Dispatchers.IO) {
