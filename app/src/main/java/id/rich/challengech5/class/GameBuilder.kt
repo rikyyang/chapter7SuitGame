@@ -1,5 +1,6 @@
 package id.rich.challengech5.`class`
 
+import id.rich.challengech5.model.GameResult
 import kotlin.random.Random
 
 class GameBuilder(val player: Player, val enemy: Enemy): DeclareGame() {
@@ -15,16 +16,16 @@ class GameBuilder(val player: Player, val enemy: Enemy): DeclareGame() {
         val calculate = player1Point - enemyPoint
 
         if (calculate == 1 || calculate == -2){
-            player.setStatus("MENANG")
-            enemy.setStatus("KALAH")
+            player.setStatus(GameResult.WIN)
+            enemy.setStatus(GameResult.LOSE)
         }
         else if(calculate == 2 || calculate == -1){
-            player.setStatus("KALAH")
-            enemy.setStatus("MENANG")
+            player.setStatus(GameResult.LOSE)
+            enemy.setStatus(GameResult.WIN)
         }
         else{
-            player.setStatus("DRAW")
-            enemy.setStatus("DRAW")
+            player.setStatus(GameResult.DRAW)
+            enemy.setStatus(GameResult.DRAW)
         }
     }
 }
