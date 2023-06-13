@@ -39,12 +39,12 @@ class ProfileActivity : AppCompatActivity() {
 
         btnClickListener()
         observeViewModel()
-        fetchDataFromAPI()
+        getDataFromAPI()
     }
 
-    fun fetchDataFromAPI() {
+    private fun getDataFromAPI() {
         val apiService = ApiClient.instance
-        val call = apiService.getData()
+        val call = apiService.getDataUserProfile()
 
         call.enqueue(object : Callback<BaseResponse> {
 
@@ -52,10 +52,7 @@ class ProfileActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val data = response.body()
                     val username = data?.username
-                    binding.tvNamaUser.setText(username)
-
-                    val email = data?.email
-                    binding.tvNamaEmail.setText(email)
+                    binding.tvNamaUser.text = username
 
                 } else {
                     val errorBody = response.errorBody()?.string()

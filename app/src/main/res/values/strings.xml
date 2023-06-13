@@ -5,4 +5,14 @@
     <string name="setting">setting</string>
     <string name="game_history">game history</string>
     <string name="logout">logout</string>
+    <string name="theme_options">Theme Options</string>
+    <string name="auto">Auto</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="new_name">new name</string>
+    <string name="new_email">new email</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="update">update</string>
 </resources>

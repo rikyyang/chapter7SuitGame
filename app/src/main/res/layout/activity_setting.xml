@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/oneoftheguys"
-                android:text="Theme Options"
+                android:text="@string/theme_options"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="25sp" />
 
@@ -44,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/oneoftheguys"
-                    android:text="Auto"
+                    android:text="@string/auto"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="20sp" />
 
@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/oneoftheguys"
-                    android:text="Light"
+                    android:text="@string/light"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="20sp" />
 
@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/oneoftheguys"
-                    android:text="Dark"
+                    android:text="@string/dark"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="20sp" />
 
@@ -83,15 +83,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/oneoftheguys"
-                android:text="Edit Profile"
+                android:text="@string/edit_profile"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="25sp" />
 
             <EditText
+                android:id="@+id/et_newName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="new name" />
+                android:hint="@string/new_name" />
 
             <RadioGroup
                 android:id="@+id/rg_genderOptions"
@@ -104,7 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/oneoftheguys"
-                    android:text="Male"
+                    android:text="@string/male"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="20sp" />
 
@@ -112,18 +113,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/oneoftheguys"
-                    android:text="Female"
+                    android:text="@string/female"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="20sp" />
 
             </RadioGroup>
 
             <Button
+                android:id="@+id/btn_update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/oneoftheguys"
-                android:text="save" />
+                android:text="@string/update" />
 
         </LinearLayout>
 
