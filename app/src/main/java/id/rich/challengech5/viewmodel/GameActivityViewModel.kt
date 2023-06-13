@@ -1,6 +1,7 @@
 package id.rich.challengech5.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import id.rich.challengech5.`class`.Enemy
 import id.rich.challengech5.`class`.GameBuilder
@@ -59,6 +60,7 @@ class GameActivityViewModel(application: Application): AndroidViewModel(applicat
         viewModelScope.launch(Dispatchers.IO) {
             gameHistoryRepository.insertGameHistory(gameHistory)
             _gameResult.postValue(null)
+            Log.d("Database", "GameHistory inserted: $gameHistory")
         }
     }
 
@@ -66,7 +68,6 @@ class GameActivityViewModel(application: Application): AndroidViewModel(applicat
         viewModelScope.launch(Dispatchers.IO) {
             val gameHistoryList = gameHistoryRepository.getAllGameHistory()
             _gameHistoryList.postValue(gameHistoryList)
-            _gameResult.postValue(null)
         }
     }
 
