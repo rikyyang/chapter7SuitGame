@@ -44,7 +44,7 @@ class GameActivityViewModel(application: Application): AndroidViewModel(applicat
         val result = player.getStatus()
         enemy.setStatus(result)
 
-        val gameHistory = GameHistory(0,playerName,enemyName,result)
+        val gameHistory = GameHistory(null,playerName,enemyName,result)
         insertGameHistory(gameHistory)
 
 
