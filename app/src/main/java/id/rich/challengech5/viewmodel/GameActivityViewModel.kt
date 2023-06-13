@@ -55,6 +55,7 @@ class GameActivityViewModel(application: Application): AndroidViewModel(applicat
     fun insertGameHistory(gameHistory: GameHistory) {
         viewModelScope.launch(Dispatchers.IO) {
             gameHistoryRepository.insertGameHistory(gameHistory)
+            _gameResult.postValue(null)
         }
     }
 
@@ -62,6 +63,7 @@ class GameActivityViewModel(application: Application): AndroidViewModel(applicat
         viewModelScope.launch(Dispatchers.IO) {
             val gameHistoryList = gameHistoryRepository.getAllGameHistory()
             _gameHistoryList.postValue(gameHistoryList)
+            _gameResult.postValue(null)
         }
     }
 
