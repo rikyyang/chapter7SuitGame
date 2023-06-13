@@ -230,6 +230,7 @@ class GameActivity : AppCompatActivity() {
             val playerName = tvP1.text.toString()
             val enemyName = tvEnemy.text.toString()
 
+            gameActivityViewModel.gameResult.removeObservers(this@GameActivity)
 
             gameActivityViewModel.startGame(
                 playerName,
