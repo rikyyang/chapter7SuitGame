@@ -163,9 +163,14 @@ class GameActivity : AppCompatActivity() {
             }
 
             start(player1Choice, player2Choice)
+
+            if (gameActivityViewModel.game.isGameOver()) {
+                val result = gameActivityViewModel.player.getStatus()
+                gameActivityViewModel.enemy.setStatus(result)
+                showResult(result.name)
+            }
+
         }
-
-
     }
 
     private fun setEnableButtonP1(active: Boolean) {

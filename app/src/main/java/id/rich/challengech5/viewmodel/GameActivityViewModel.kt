@@ -46,7 +46,10 @@ class GameActivityViewModel(application: Application): AndroidViewModel(applicat
         val gameHistory = GameHistory(0,playerName,enemyName,result)
         insertGameHistory(gameHistory)
 
-        _gameResult.postValue(result)
+
+        if (game.isGameOver()) {
+            _gameResult.postValue(result)
+        }
 
 
     }

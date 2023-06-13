@@ -28,4 +28,8 @@ class GameBuilder(val player: Player, val enemy: Enemy): DeclareGame() {
             enemy.setStatus(GameResult.DRAW)
         }
     }
+
+    fun isGameOver(): Boolean {
+        return player.getPoint() != -1 && enemy.getPoint() != -1
+    }
 }
