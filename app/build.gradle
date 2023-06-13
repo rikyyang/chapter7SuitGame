@@ -36,6 +36,11 @@ android {
         enabled = true
     }
 
+    android {
+        dataBinding {
+            enabled = true
+        }
+    }
 
 }
 
@@ -58,5 +63,5 @@ dependencies {
     kapt("androidx.room:room-compiler:2.5.1")
     implementation("androidx.recyclerview:recyclerview:1.3.0")
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
-
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
 }
