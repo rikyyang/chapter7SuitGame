@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.SimpleExoPlayer
 import id.rich.challengech5.R
 import id.rich.challengech5.databinding.GameBinding
 import id.rich.challengech5.viewmodel.GameActivityViewModel
@@ -19,6 +21,9 @@ class GameActivity : AppCompatActivity() {
     private lateinit var gameActivityViewModel: GameActivityViewModel
     private var player1Choice: Int = -1
     private var player2Choice: Int = -1
+    private lateinit var player: SimpleExoPlayer
+    private lateinit var setMediaItem: MediaItem
+    private lateinit var soundSource: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +41,8 @@ class GameActivity : AppCompatActivity() {
         with(binding) {
             tvP1.text = playerName
             tvEnemy.text = enemyName
+
+
 
             ivBatup1.setOnClickListener {
                 ivBatup1.setBackgroundResource(R.drawable.background_btnclick)
@@ -62,74 +69,65 @@ class GameActivity : AppCompatActivity() {
                 }
             }
 
-                ivKertasp1.setOnClickListener {
-                    ivKertasp1.setBackgroundResource(R.drawable.background_btnclick)
-                    setEnableButtonP1(false)
-                    Toast.makeText(
-                        this@GameActivity,
-                        "$playerName Memilih Kertas",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    player1Choice = 1
+            ivKertasp1.setOnClickListener {
+                ivKertasp1.setBackgroundResource(R.drawable.background_btnclick)
+                setEnableButtonP1(false)
+                Toast.makeText(this@GameActivity, "$playerName Memilih Kertas", Toast.LENGTH_SHORT).show()
+                player1Choice = 1
 
-                    if (enemyName == "CPU") {
-                        computerChoose()
-                    } else {
-                        ivBatuenemy.setOnClickListener {
-                            player2Choice = 0
-                            setBackgroundEnemy(player2Choice)
-                        }
-                        ivKertasenemy.setOnClickListener {
-                            player2Choice = 1
-                            setBackgroundEnemy(player2Choice)
-                        }
-                        ivGuntingenemy.setOnClickListener {
-                            player2Choice = 2
-                            setBackgroundEnemy(player2Choice)
-                        }
+                if (enemyName == "CPU") {
+                    computerChoose()
+                } else {
+                    ivBatuenemy.setOnClickListener {
+                        player2Choice = 0
+                        setBackgroundEnemy(player2Choice)
+                    }
+                    ivKertasenemy.setOnClickListener {
+                        player2Choice = 1
+                        setBackgroundEnemy(player2Choice)
+                    }
+                    ivGuntingenemy.setOnClickListener {
+                        player2Choice = 2
+                        setBackgroundEnemy(player2Choice)
                     }
                 }
-
-                ivGuntingp1.setOnClickListener {
-                    ivGuntingp1.setBackgroundResource(R.drawable.background_btnclick)
-                    setEnableButtonP1(false)
-                    Toast.makeText(
-                        this@GameActivity,
-                        "$playerName Memilih Gunting",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                    player1Choice = 2
-
-                    if (enemyName == "CPU") {
-                        computerChoose()
-                    } else {
-                        ivBatuenemy.setOnClickListener {
-                            player2Choice = 0
-                            setBackgroundEnemy(player2Choice)
-                        }
-                        ivKertasenemy.setOnClickListener {
-                            player2Choice = 1
-                            setBackgroundEnemy(player2Choice)
-                        }
-                        ivGuntingenemy.setOnClickListener {
-                            player2Choice = 2
-                            setBackgroundEnemy(player2Choice)
-                        }
-                    }
-                }
-
-                ivClose.setOnClickListener {
-                    finish()
-                }
-
-                ivRefresh.setOnClickListener {
-                    restart()
-                }
-
-
             }
+
+            ivGuntingp1.setOnClickListener {
+                ivGuntingp1.setBackgroundResource(R.drawable.background_btnclick)
+                setEnableButtonP1(false)
+                Toast.makeText(this@GameActivity, "$playerName Memilih Gunting", Toast.LENGTH_SHORT).show()
+                player1Choice = 2
+
+                if (enemyName == "CPU") {
+                    computerChoose()
+                } else {
+                    ivBatuenemy.setOnClickListener {
+                        player2Choice = 0
+                        setBackgroundEnemy(player2Choice)
+                    }
+                    ivKertasenemy.setOnClickListener {
+                        player2Choice = 1
+                        setBackgroundEnemy(player2Choice)
+                    }
+                    ivGuntingenemy.setOnClickListener {
+                        player2Choice = 2
+                        setBackgroundEnemy(player2Choice)
+                    }
+                }
+            }
+
+            ivClose.setOnClickListener {
+                finish()
+            }
+
+            ivRefresh.setOnClickListener {
+                restart()
+            }
+
+
         }
+    }
 
 
     private fun setBackgroundEnemy(player2Choice: Int) {
@@ -213,6 +211,13 @@ class GameActivity : AppCompatActivity() {
         builder.setView(view)
 
         tvResult.text = result
+        player = SimpleExoPlayer.Builder(this@GameActivity).build()
+        binding.playersound.player = player
+        setMediaItem = MediaItem.fromUri(getStatusSound(result))
+
+        player.setMediaItem(setMediaItem)
+        player.prepare()
+        player.play()
 
         buttonPlayAgain.setOnClickListener {
             builder.dismiss()
@@ -224,6 +229,18 @@ class GameActivity : AppCompatActivity() {
         }
         builder.setCanceledOnTouchOutside(false)
         builder.show()
+    }
+
+    private fun getStatusSound(result: String): String {
+
+        when(result) {
+            "WIN" -> soundSource = "android.resource://id.rich.challengech5/${R.raw.you_win}"
+            "LOSE" -> soundSource = "android.resource://id.rich.challengech5/${R.raw.you_lose}"
+            "DRAW" -> soundSource = "android.resource://id.rich.challengech5/${R.raw.draw}"
+        }
+
+        return soundSource
+
     }
 
     private fun showResult(result: String) {
@@ -253,5 +270,10 @@ class GameActivity : AppCompatActivity() {
 
             })
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        player.release()
     }
 }
