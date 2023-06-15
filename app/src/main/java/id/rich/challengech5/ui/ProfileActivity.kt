@@ -1,133 +1,108 @@
 package id.rich.challengech5.ui
 
+import android.content.ContentValues.TAG
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModelProvider
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.util.Util
 import id.rich.challengech5.R
 import id.rich.challengech5.database.GameDatabase
-import id.rich.challengech5.database.UserDao
 import id.rich.challengech5.databinding.ActivityProfileBinding
-import id.rich.challengech5.model.Gender
-import id.rich.challengech5.presenter.ProfilePresenter
-import id.rich.challengech5.view.ProfileContract
+import id.rich.challengech5.service.ApiClient
+import id.rich.challengech5.service.BaseResponse
 import id.rich.challengech5.view.SettingActivity
 import id.rich.challengech5.viewmodel.ProfileViewModel
+import retrofit2.Callback
+import retrofit2.Call
+import retrofit2.Response
 
-
-class ProfileActivity : AppCompatActivity(), ProfileContract.View {
+class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileBinding
-    private lateinit var userDao: UserDao
-    private lateinit var presenter: ProfileContract.Presenter
-    private var dialog: AlertDialog? = null
     private lateinit var viewModel: ProfileViewModel
-    private lateinit var exoPlayer: SimpleExoPlayer
-    private lateinit var playerView: PlayerView
-
+    private var dialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //view Model ProfileViewModel
-        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
-
-        viewModel.showVideoDialog.observe(this) {videoUrl ->
-            if (!videoUrl.isNullOrEmpty()) {
-                showVideoDialog(videoUrl)
-            }
-        }
-
-
         val db = GameDatabase.getInstance(this)
-        userDao = db.userDao()
+        val userDao = db.userDao()
 
-        presenter = ProfilePresenter(this, userDao, this)
+        viewModel = ProfileViewModel(application)
 
-        val username = intent.getStringExtra("player_name")
-        presenter.setDataProfil(username)
+        viewModel.init(userDao)
 
         btnClickListener()
+        observeViewModel()
+        getDataFromAPI()
     }
 
-    private fun pauseVideo() {
-        exoPlayer.pause()
+    private fun getDataFromAPI() {
+        val apiService = ApiClient.instance
+        val call = apiService.getDataUserProfile()
+
+        call.enqueue(object : Callback<BaseResponse> {
+
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (response.isSuccessful) {
+                    val data = response.body()
+                    val username = data?.username
+                    binding.tvNamaUser.text = username
+
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = "Failed to retrieve data: $errorBody"
+
+                    Log.e(TAG, errorMessage)
+                    Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable?) {
+                val errorMessage = "Failed to make API request: ${t?.message}"
+
+                Log.e(TAG, errorMessage)
+                Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 
-    private fun playVideo() {
-        exoPlayer.play()
-    }
-
-    //menampilkan video dengan dialog
-    private fun showVideoDialog(videoUrl: String) {
-
-        val builder = AlertDialog.Builder(this)
-        val dialogView = layoutInflater.inflate(R.layout.dialog_video, null)
-        builder.setView(dialogView)
-
-        playerView = dialogView.findViewById(R.id.videoPlayerView)
-        val closeButton = dialogView.findViewById<Button>(R.id.closeButton)
-
-        exoPlayer = SimpleExoPlayer.Builder(this)
-            .setTrackSelector(DefaultTrackSelector(this))
-            .build()
-
-        playerView.player = exoPlayer
-        val mediaSource = buildMediaSource(videoUrl)
-        exoPlayer.setMediaSource(mediaSource)
-
-        exoPlayer.prepare()
-        exoPlayer.play()
-
-        val dialog = builder.create()
-        dialog.setCancelable(false)
-        dialog.show()
-
-        closeButton.setOnClickListener {
-            exoPlayer.stop()
-            exoPlayer.release()
-            dialog.dismiss()
+    private fun observeViewModel() {
+        viewModel.userName.observe(this) { name ->
+            binding.tvNamaUser.text = name
         }
 
+//        viewModel.userGender.observe(this, { gender ->
+//            if (gender == Gender.FEMALE) {
+//                binding.ivGender.setImageResource(R.drawable.girl)
+//            }
+//        })
 
-    }
+        viewModel.navigateToSettingActivity.observe(this) {
+            startActivity(Intent(this, SettingActivity::class.java))
+        }
 
-    private fun buildMediaSource(videoUrl: String): MediaSource{
+        viewModel.showDialog.observe(this) {
+            showDialog()
+        }
 
-        val userAgent = Util.getUserAgent(this, "ChallengeCH5")
-        val dataSourceFactory = DefaultDataSourceFactory(this, userAgent)
-        return ProgressiveMediaSource.Factory(dataSourceFactory)
-            .createMediaSource(Uri.parse(videoUrl))
+        viewModel.dismissDialog.observe(this) {
+            dismissDialog()
+        }
 
-    }
-
-    override fun showUserName(name: String) {
-        binding.tvNamaUser.text = name
-    }
-
-    override fun showUserGender(gender: Gender) {
-        if (gender == Gender.FEMALE) {
-            binding.ivGender.setImageResource(R.drawable.girl)
+        viewModel.setResultAndFinish.observe(this) { resultCode ->
+            setResult(resultCode)
+            finish()
         }
     }
 
-    override fun navigateToSettingActivity() {
-        startActivity(Intent(this, SettingActivity::class.java))
-    }
-
-    override fun showDialog() {
+    private fun showDialog() {
         val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
         val view = layoutInflater.inflate(R.layout.dialog_logout, null)
         builder.setView(view)
@@ -138,48 +113,34 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         dialog = builder.create()
 
         btnYes.setOnClickListener {
-            presenter.onLogOutConfirmation()
+            viewModel.onLogOutConfirmation()
         }
 
         btnNo.setOnClickListener {
-            presenter.onLogOutCanceled()
+            viewModel.onLogOutCanceled()
         }
 
         dialog?.setCancelable(false)
         dialog?.setOnCancelListener {
-            presenter.onLogOutCanceled()
+            viewModel.onLogOutCanceled()
         }
         dialog?.show()
     }
 
-    override fun dismissDialog() {
+    private fun dismissDialog() {
         dialog?.dismiss()
         dialog = null
     }
 
-    override fun setResultAndFinish(resultCode: Int) {
-        setResult(resultCode)
-        finish()
-    }
-
     private fun btnClickListener() {
-        binding.btnThemeSetting.setOnClickListener {
-            presenter.onThemeSettingClicked()
+        binding.btnSetting.setOnClickListener {
+            viewModel.onThemeSettingClicked()
         }
         binding.btnGameHistory.setOnClickListener {
-            presenter.onGameHistoryClicked()
+            viewModel.onGameHistoryClicked()
         }
-
-        //viewmodel tidak menggunakan presenter
-        binding.btnVideo.setOnClickListener {
-            val videoUrl = "android.resource://id.rich.challengech5/${R.raw.sample_video}"
-            viewModel.openVideoDialog(videoUrl)
-        }
-
         binding.btnLogOut.setOnClickListener {
-            presenter.onLogOutClicked()
+            viewModel.onLogOutClicked()
         }
     }
 }
-
-

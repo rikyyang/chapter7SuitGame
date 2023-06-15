@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/oneoftheguys"
-                android:text="Nama"
+                android:text="@string/nama"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="25sp" />
 
@@ -53,56 +53,40 @@
             app:layout_constraintTop_toBottomOf="@id/dataProfile">
 
             <Button
-                android:id="@+id/btnThemeSetting"
+                android:id="@+id/btn_setting"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/background_btntheme"
                 android:fontFamily="@font/oneoftheguys"
-                android:text="setting"
+                android:text="@string/setting"
                 android:textSize="16sp" />
 
             <Button
-                android:id="@+id/btnGameHistory"
+                android:id="@+id/btn_gameHistory"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_btntheme"
                 android:fontFamily="@font/oneoftheguys"
-                android:text="game history"
+                android:text="@string/game_history"
                 android:textSize="16sp" />
 
             <Button
-                android:id="@+id/btnVideo"
+                android:id="@+id/btn_logOut"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_btntheme"
                 android:fontFamily="@font/oneoftheguys"
-                android:text="Video Tutorial"
-                android:textSize="16dp" />
-
-
-            <Button
-                android:id="@+id/btnLogOut"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/background_btntheme"
-                android:fontFamily="@font/oneoftheguys"
-                android:text="logout"
+                android:text="@string/logout"
                 android:textSize="16sp" />
 
         </LinearLayout>
 
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </ScrollView>
 
