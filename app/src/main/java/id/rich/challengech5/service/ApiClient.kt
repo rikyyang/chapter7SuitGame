@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
-    private const val BASE_URL = "https://binar-gdd-cc8.herokuapp.com/"
+    private const val BASE_URL = "https://api-suit.binaracademy.org/"
 
     val instance: ApiService by lazy {
         val retrofit = Retrofit.Builder()

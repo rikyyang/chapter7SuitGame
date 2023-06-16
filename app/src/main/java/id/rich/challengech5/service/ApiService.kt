@@ -8,4 +8,6 @@ interface ApiService {
     @POST("api/v1/auth/register")
     fun registerNewUser(@Body response: PostRegisterNewUserRequest): Call<BaseResponse>
 
+    @POST("api/v1/auth/login")
+    fun login(@Body response: PostLoginRequest): Call<BaseResponse>
 }
