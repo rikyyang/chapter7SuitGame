@@ -10,9 +10,6 @@ import retrofit2.Response
 
 class SuitGameRepository(private val apiService: ApiService) {
 
-    fun login(postLoginResponse: PostLoginRequest, listener: Listener) {
-
-    }
     fun registerNewUser(postRegisterNewUserResponse: PostRegisterNewUserRequest, listener: Listener) {
         apiService.registerNewUser(postRegisterNewUserResponse)
             .enqueue(object : Callback<BaseResponse>{
