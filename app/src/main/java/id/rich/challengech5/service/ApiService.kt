@@ -10,10 +10,12 @@ interface ApiService {
     @POST("api/v1/auth/register")
     fun registerNewUser(@Body response: PostRegisterNewUserRequest): Call<BaseResponse>
 
+    @POST("api/v1/auth/login")
+    fun login(@Body response: PostLoginRequest): Call<BaseResponse>
+
     @GET("api/v1/users")
     fun getDataUserProfile(): Call<BaseResponse>
 
     @PUT("api/vi/users")
     fun updateDataUserProfile(_id: String, newName: String): Call<BaseResponse>
-
 }

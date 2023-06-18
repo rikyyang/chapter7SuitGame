@@ -2,12 +2,14 @@ package id.rich.challengech5.repository
 
 import id.rich.challengech5.service.ApiService
 import id.rich.challengech5.service.BaseResponse
+import id.rich.challengech5.service.PostLoginRequest
 import id.rich.challengech5.service.PostRegisterNewUserRequest
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class SuitGameRepository(private val apiService: ApiService) {
+
     fun registerNewUser(postRegisterNewUserResponse: PostRegisterNewUserRequest, listener: Listener) {
         apiService.registerNewUser(postRegisterNewUserResponse)
             .enqueue(object : Callback<BaseResponse>{
