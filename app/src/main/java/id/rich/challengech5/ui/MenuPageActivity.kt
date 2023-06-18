@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.snackbar.Snackbar
 import id.rich.challengech5.R
-import id.rich.challengech5.database.UserDao
 
 class MenuPageActivity : AppCompatActivity() {
 
@@ -58,14 +57,14 @@ class MenuPageActivity : AppCompatActivity() {
                 ic_profile.setBackgroundResource(R.drawable.background_btnawal)
             }, 1000)
 
-            startActivityForResult(intent, 1)
+            startActivityForResult(intent, 123)
         }
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == 3) {
+        if (requestCode == 123 && resultCode == Activity.RESULT_OK) {
             startActivity(Intent(this, LandingPageActivity::class.java))
             finish()
         }

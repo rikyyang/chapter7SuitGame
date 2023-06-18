@@ -32,24 +32,24 @@
         app:layout_constraintVertical_bias="0.5">
 
         <EditText
-            android:id="@+id/daftar_nama"
+            android:id="@+id/tv_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:hint="Nama" />
+            android:layout_margin="16dp"
+            android:hint="Email" />
 
         <EditText
-            android:id="@+id/daftar_username"
+            android:id="@+id/tv_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="16dp"
             android:hint="Username" />
 
         <EditText
-            android:id="@+id/daftar_pasword"
+            android:id="@+id/tv_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="16dp"
             android:hint="Password"
             android:inputType="textPassword" />
 
