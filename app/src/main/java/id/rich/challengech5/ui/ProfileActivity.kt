@@ -1,23 +1,28 @@
 package id.rich.challengech5.ui
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import id.rich.challengech5.R
 import id.rich.challengech5.database.GameDatabase
-import id.rich.challengech5.database.UserDao
 import id.rich.challengech5.databinding.ActivityProfileBinding
-import id.rich.challengech5.model.Gender
-import id.rich.challengech5.presenter.ProfilePresenter
-import id.rich.challengech5.view.ProfileContract
+import id.rich.challengech5.service.ApiClient
+import id.rich.challengech5.service.BaseResponse
+import id.rich.challengech5.view.SettingActivity
+import id.rich.challengech5.viewmodel.ProfileViewModel
+import retrofit2.Callback
+import retrofit2.Call
+import retrofit2.Response
 
-class ProfileActivity : AppCompatActivity(), ProfileContract.View {
+class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileBinding
-    private lateinit var userDao: UserDao
-    private lateinit var presenter: ProfileContract.Presenter
+    private lateinit var viewModel: ProfileViewModel
     private var dialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,31 +31,78 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         setContentView(binding.root)
 
         val db = GameDatabase.getInstance(this)
-        userDao = db.userDao()
+        val userDao = db.userDao()
 
-        presenter = ProfilePresenter(this, userDao, this)
+        viewModel = ProfileViewModel(application)
 
-        val username = intent.getStringExtra("player_name")
-        presenter.setDataProfil(username)
+        viewModel.init(userDao)
 
         btnClickListener()
+        observeViewModel()
+        getDataFromAPI()
     }
 
-    override fun showUserName(name: String) {
-        binding.tvNamaUser.text = name
+    private fun getDataFromAPI() {
+        val apiService = ApiClient.instance
+        val call = apiService.getDataUserProfile()
+
+        call.enqueue(object : Callback<BaseResponse> {
+
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (response.isSuccessful) {
+                    val data = response.body()
+                    val username = data?.username
+                    binding.tvNamaUser.text = username
+
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = "Failed to retrieve data: $errorBody"
+
+                    Log.e(TAG, errorMessage)
+                    Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable?) {
+                val errorMessage = "Failed to make API request: ${t?.message}"
+
+                Log.e(TAG, errorMessage)
+                Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 
-    override fun showUserGender(gender: Gender) {
-        if (gender == Gender.FEMALE) {
-            binding.ivGender.setImageResource(R.drawable.girl)
+    private fun observeViewModel() {
+        viewModel.userName.observe(this) { name ->
+            binding.tvNamaUser.text = name
+        }
+
+//        viewModel.userGender.observe(this, { gender ->
+//            if (gender == Gender.FEMALE) {
+//                binding.ivGender.setImageResource(R.drawable.girl)
+//            }
+//        })
+
+        viewModel.navigateToSettingActivity.observe(this) {
+            startActivity(Intent(this, SettingActivity::class.java))
+        }
+
+        viewModel.showDialog.observe(this) {
+            showDialog()
+        }
+
+        viewModel.dismissDialog.observe(this) {
+            dismissDialog()
+        }
+
+        viewModel.setResultAndFinish.observe(this) { resultCode ->
+            setResult(resultCode)
+            finish()
         }
     }
 
-    override fun navigateToThemeActivity() {
-        startActivity(Intent(this, ThemeActivity::class.java))
-    }
-
-    override fun showDialog() {
+    private fun showDialog() {
         val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
         val view = layoutInflater.inflate(R.layout.dialog_logout, null)
         builder.setView(view)
@@ -61,39 +113,34 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         dialog = builder.create()
 
         btnYes.setOnClickListener {
-            presenter.onLogOutConfirmation()
+            viewModel.onLogOutConfirmation()
         }
 
         btnNo.setOnClickListener {
-            presenter.onLogOutCanceled()
+            viewModel.onLogOutCanceled()
         }
 
         dialog?.setCancelable(false)
         dialog?.setOnCancelListener {
-            presenter.onLogOutCanceled()
+            viewModel.onLogOutCanceled()
         }
         dialog?.show()
     }
 
-    override fun dismissDialog() {
+    private fun dismissDialog() {
         dialog?.dismiss()
         dialog = null
     }
 
-    override fun setResultAndFinish(resultCode: Int) {
-        setResult(resultCode)
-        finish()
-    }
-
     private fun btnClickListener() {
-        binding.btnThemeSetting.setOnClickListener {
-            presenter.onThemeSettingClicked()
+        binding.btnSetting.setOnClickListener {
+            viewModel.onThemeSettingClicked()
         }
         binding.btnGameHistory.setOnClickListener {
-            presenter.onGameHistoryClicked()
+            viewModel.onGameHistoryClicked()
         }
         binding.btnLogOut.setOnClickListener {
-            presenter.onLogOutClicked()
+            viewModel.onLogOutClicked()
         }
     }
 }

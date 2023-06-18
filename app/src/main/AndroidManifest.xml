@@ -9,12 +9,12 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="ChallengeCH6"
+        android:label="ChallengeCH7"
         android:supportsRtl="true"
         android:theme="@style/Theme.chapter6SuitGame"
         tools:targetApi="31">
         <activity
-            android:name=".ui.ThemeActivity"
+            android:name=".view.SettingActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
