@@ -8,7 +8,7 @@ import id.rich.challengech5.model.GameHistory
 
 @Dao
 interface GameHistoryDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGameHistory(gameHistory: GameHistory)
 
     @Query("SELECT * FROM game_history")

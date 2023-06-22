@@ -3,6 +3,7 @@ package id.rich.challengech5.repository
 import id.rich.challengech5.service.ApiService
 import id.rich.challengech5.service.BaseResponse
 import id.rich.challengech5.service.PostLoginRequest
+import id.rich.challengech5.service.UserJson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +26,9 @@ class LoginRepository(private val apiService: ApiService) {
                                 listener.onLoginFailure("Failed to load data")
                             }
                             else{
-                                listener.onLoginSuccess("Success!", response.body()?.data)
+                                listener.onLoginSuccess("Success!",
+                                    response.body()?.data
+                                )
                             }
                         }
                     }

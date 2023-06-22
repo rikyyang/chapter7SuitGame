@@ -1,11 +1,12 @@
 package id.rich.challengech5.`class`
 
+import id.rich.challengech5.model.GameResult
 
 
 class Enemy: PlayerImplementation() {
 
     private var point = 0
-    private var status = "KALAH"
+    private var status = GameResult.LOSE
 
     override fun getPoint(): Int = point
 
@@ -13,9 +14,9 @@ class Enemy: PlayerImplementation() {
         this.point = choose
     }
 
-    override fun setStatus(status: String) {
+    override fun setStatus(status: GameResult) {
         this.status = status
     }
 
-    override fun getStatus(): String = status
+    override fun getStatus(): GameResult = status
 }
