@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import id.rich.challengech5.databinding.ActivityRegisterBinding
+import id.rich.challengech5.repository.LoginRepository
 import id.rich.challengech5.repository.SuitGameRepository
 import id.rich.challengech5.service.ApiClient
+import id.rich.challengech5.viewmodel.LoginViewModel
 import id.rich.challengech5.viewmodel.SuitGameViewModel
 import viewModelsFactory
 

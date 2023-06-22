@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import id.rich.challengech5.repository.LoginRepository
 import id.rich.challengech5.service.PostLoginRequest
+import id.rich.challengech5.service.UserJson
 
 class LoginViewModel(private val repository: LoginRepository) : ViewModel() {
     val onSuccess = MutableLiveData<Boolean>()
@@ -20,9 +21,9 @@ class LoginViewModel(private val repository: LoginRepository) : ViewModel() {
         } else {
             val dataLogin = PostLoginRequest(email, password)
             repository.login(dataLogin, object : LoginRepository.Listener {
-                override fun onLoginSuccess(sccMessage: String, data: Any?) {
+                override fun onLoginSuccess(sccMessage: String, sccData: Any?) {
                     onSuccess.value = true
-                    onSuccessData.value = data
+                    onSuccessData.value = sccData
                 }
 
                 override fun onLoginFailure(errMessage: String) {

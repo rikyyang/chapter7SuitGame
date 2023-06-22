@@ -15,14 +15,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.bumptech.glide.Glide
 import id.rich.challengech5.R
 import id.rich.challengech5.repository.LoginRepository
 import id.rich.challengech5.service.ApiClient
+import id.rich.challengech5.service.UserJson
 import id.rich.challengech5.viewmodel.LoginViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import viewModelsFactory
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,7 +37,7 @@ class LoginFragment : Fragment() {
 
     private val apiService by lazy {ApiClient.instance}
     private val repository by lazy {LoginRepository(apiService)}
-    private val viewModel: LoginViewModel by viewModelsFactory { LoginViewModel(repository) }
+    private val viewModel: LoginViewModel by requireActivity().viewModelsFactory { LoginViewModel(repository) }
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
@@ -99,7 +98,7 @@ class LoginFragment : Fragment() {
         requireActivity().finish()
     }
 
-    private fun saveLogin(data: Any) {
+    private fun saveLogin(data: UserJson) {
         sharedPreferences = requireActivity().getSharedPreferences("LoginPreferences",
             Context.MODE_PRIVATE
         )
@@ -113,7 +112,7 @@ class LoginFragment : Fragment() {
     private fun observeLogin(context: Context) {
         viewModel.onSuccess.observe(requireActivity()) { onSuccess ->
             if (onSuccess){
-                saveLogin(viewModel.onSuccessData)
+                saveLogin(viewModel.onSuccessData.value as UserJson)
 
                 nextScreen()
             }
